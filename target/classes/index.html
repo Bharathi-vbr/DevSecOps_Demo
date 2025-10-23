@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Java Calculator</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f7f7f7;
+      margin: 40px;
+    }
+    h2 {
+      color: #333;
+    }
+    .container {
+      background: white;
+      max-width: 400px;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #0078d7;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    .result {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>🧮 Simple Java Calculator</h2>
+
+  <div class="container">
+    <form id="calcForm">
+      <label for="a">Number A:</label>
+      <input name="a" id="a" type="number" step="any" placeholder="Enter first number" required />
+
+      <label for="b">Number B:</label>
+      <input name="b" id="b" type="number" step="any" placeholder="Enter second number" required />
+
+      <label for="op">Operation:</label>
+      <select name="op" id="op">
+        <option value="add">Add (+)</option>
+        <option value="subtract">Subtract (−)</option>
+        <option value="multiply">Multiply (×)</option>
+        <option value="divide">Divide (÷)</option>
+      </select>
+
+      <button type="submit">Calculate</button>
+    </form>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('calcForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const params = new URLSearchParams(formData);
+
+      const res = await fetch('/api/calc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      });
+
+      const data = await res.json();
+      document.getElementById('result').textContent = 'Result: ' + data.result;
+    });
+  </script>
+</body>
+</html>
