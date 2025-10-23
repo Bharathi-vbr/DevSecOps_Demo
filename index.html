@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Java Calculator</title>
+</head>
+<body>
+  <h2>Simple Calculator (Java 25)</h2>
+  <form id="calcForm">
+    <input name="a" type="number" step="any" placeholder="Number A" required><br><br>
+    <input name="b" type="number" step="any" placeholder="Number B" required><br><br>
+    <select name="op">
+      <option value="add">Add</option>
+      <option value="subtract">Subtract</option>
+      <option value="multiply">Multiply</option>
+      <option value="divide">Divide</option>
+    </select><br><br>
+    <button type="submit">Calculate</button>
+  </form>
+
+  <h3 id="result"></h3>
+
+  <script>
+    document.getElementById('calcForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const params = new URLSearchParams(formData);
+
+      const res = await fetch('/api/calc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      });
+      const data = await res.json();
+      document.getElementById('result').textContent = 'Result: ' + data.result;
+    });
+  </script>
+</body>
+</html>
