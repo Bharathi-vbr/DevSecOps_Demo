@@ -22,11 +22,13 @@ public final class CalculatorServer {
      */
     public static void main(final String[] args) throws IOException {
         final int serverPort = 8080;
-        HttpServer server = HttpServer.create(new InetSocketAddress(serverPort), 0);
-        server.createContext("/", new CalculatorHandler());
+        HttpServer server = HttpServer.create(
+            new InetSocketAddress(serverPort), 0);
+        server.createContext(
+            "/", new CalculatorHandler());
         server.setExecutor(null); // default executor
-        System.out.println("Calculator server is running on port " + serverPort);
+        System.out.println(
+            "Calculator server is running on port " + serverPort);
         server.start();
     }
 }
-
