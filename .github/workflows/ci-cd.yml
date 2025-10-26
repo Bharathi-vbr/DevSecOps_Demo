@@ -93,11 +93,9 @@ jobs:
       - name: Update image tag in deployment.yaml
         env:
           IMAGE_TAG: ${{ github.sha }}
-          REGISTRY: ghcr.io
-          REPO: ${{ github.repository }}
         run: |
-          NEW_IMAGE="${REGISTRY}/${REPO}:${IMAGE_TAG}"
-          sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" kubernetes/deployment.yaml
+          NEW_IMAGE="ghcr.io/bharathi-vbr/devsecops_demo:${IMAGE_TAG}"
+          sed -i "s|image: ghcr.io.*|image: ${NEW_IMAGE}|g" kubernetes/deployment.yaml
           echo "Updated deployment.yaml with image: ${NEW_IMAGE}"
           grep -A 1 "image:" kubernetes/deployment.yaml
       - name: Commit and push changes
