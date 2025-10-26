@@ -16,7 +16,8 @@
       align-items: center;
       justify-content: center;
       font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%);
+      background:
+        radial-gradient(circle at 60% 15%, #82aaff 0%, #3a7bd5 80%, #232526 100%);
       margin: 0;
     }
     .main-center {
@@ -30,7 +31,7 @@
     .fancy-heading {
       font-size: 2.3rem;
       font-weight: bold;
-      background: linear-gradient(90deg, #ff512f 10%, #dd2476 90%);
+      background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
       color: transparent;
       background-clip: text;
       -webkit-background-clip: text;
@@ -40,12 +41,12 @@
       text-shadow: 0 3px 6px rgba(60,40,60,0.12);
     }
     .container {
-      background: rgba(255,255,255,0.94);
+      background: rgba(255,255,255,0.96);
       max-width: 400px;
       margin-top: 12px;
       padding: 28px 22px 18px;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px 0 rgba(60,40,90,0.11), 0 1.5px 2.5px 0 rgba(50,50,80,0.08);
+      border-radius: 18px;
+      box-shadow: 0 6px 32px 0 rgba(60,40,90,0.13), 0 1.5px 2.5px 0 rgba(50,50,80,0.08);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -55,17 +56,17 @@
       padding: 11px;
       margin: 11px 0 0;
       border-radius: 7px;
-      border: 1px solid #aaa;
+      border: 1px solid #bbb;
       font-size: 16px;
       transition: border-color 0.2s;
     }
     input:focus, select:focus {
-      border-color: #2F80ED;
+      border-color: #438ef7;
       outline: none;
     }
     button {
-      background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
-      color: #fff;
+      background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+      color: #232526;
       border: none;
       margin-top: 15px;
       font-size: 18px;
@@ -76,13 +77,14 @@
       transition: background 0.2s;
     }
     button:hover {
-      background: linear-gradient(90deg, #ff512f 25%, #2F80ED 100%);
+      background: linear-gradient(90deg, #38f9d7 40%, #3a7bd5 100%);
+      color: #fff;
     }
     .result {
       font-weight: bold;
       font-size: 22px;
       margin-top: 16px;
-      color: #2f80ed;
+      color: #3a7bd5;
       text-align: center;
       min-height: 24px;
     }
@@ -90,8 +92,8 @@
       margin-top: 20px;
       text-align: center;
       font-size: 19px;
-      color: #1a2647;
-      background: #e0ffd5;
+      color: #06323a;
+      background: #c9ffdc;
       border-radius: 10px;
       padding: 12px 15px;
       font-weight: 600;
