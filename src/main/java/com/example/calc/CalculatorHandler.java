@@ -12,8 +12,13 @@ import java.util.Map;
  * <p>This class is not designed for extension.</p>
  */
 public final class CalculatorHandler implements HttpHandler {
-
+    /**
+     * HTTP status code for Not Found.
+     */
     private static final int HTTP_NOT_FOUND = 404;
+    /**
+     * HTTP status code for OK.
+     */
     private static final int HTTP_OK = 200;
 
     /**
@@ -25,7 +30,8 @@ public final class CalculatorHandler implements HttpHandler {
     public void handle(final HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
 
-        if ("/api/calc".equals(path) && "POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+        if ("/api/calc".equals(path)
+                && "POST".equalsIgnoreCase(exchange.getRequestMethod())) {
             handleApi(exchange);
         } else {
             serveHtml(exchange);
@@ -38,7 +44,8 @@ public final class CalculatorHandler implements HttpHandler {
      * @throws IOException if IO errors occur
      */
     private void serveHtml(final HttpExchange exchange) throws IOException {
-        InputStream htmlStream = getClass().getClassLoader().getResourceAsStream("index.html");
+        InputStream htmlStream =
+                getClass().getClassLoader().getResourceAsStream("index.html");
         if (htmlStream == null) {
             String errorMsg = "<h1>index.html not found</h1>";
             exchange.sendResponseHeaders(HTTP_NOT_FOUND, errorMsg.length());
@@ -67,10 +74,14 @@ public final class CalculatorHandler implements HttpHandler {
         String op = params.getOrDefault("op", "add");
 
         double result = switch (op) {
-            case "subtract" -> a - b;
-            case "multiply" -> a * b;
-            case "divide" -> (b != 0 ? a / b : Double.NaN);
-            default -> a + b;
+            case "subtract":
+                return a - b;
+            case "multiply":
+                return a * b;
+            case "divide":
+                return b != 0 ? a / b : Double.NaN;
+            default:
+                return a + b;
         };
 
         String response = "{\"result\": " + result + "}";
