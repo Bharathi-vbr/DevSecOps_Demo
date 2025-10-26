@@ -4,8 +4,8 @@ WORKDIR /app
 COPY . .
 RUN mvn clean package
 
-# Run stage
-FROM openjdk:17-jdk-alpine
+# Run stage (use Temurin Alpine for Java 17)
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
