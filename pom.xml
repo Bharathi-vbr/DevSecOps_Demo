@@ -9,8 +9,8 @@
   <name>Simple Calculator</name>
 
   <properties>
-    <maven.compiler.source>25</maven.compiler.source>
-    <maven.compiler.target>25</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.jupiter.version>5.10.2</junit.jupiter.version>
   </properties>
@@ -27,7 +27,7 @@
 
   <build>
     <plugins>
-      <!-- Compiler: add jdk.httpserver module -->
+      <!-- Compiler: OPTIONAL, only add modules if you actually use jdk.httpserver -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
