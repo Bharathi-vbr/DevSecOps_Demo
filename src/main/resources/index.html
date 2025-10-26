@@ -5,71 +5,130 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simple Java Calculator</title>
   <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: #f7f7f7;
-      margin: 40px;
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
-    h2 {
-      color: #333;
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%);
+      margin: 0;
+    }
+    .main-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      width: 100%;
+    }
+    .fancy-heading {
+      font-size: 2.3rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ff512f 10%, #dd2476 90%);
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 24px;
+      text-shadow: 0 3px 6px rgba(60,40,60,0.12);
     }
     .container {
-      background: white;
+      background: rgba(255,255,255,0.94);
       max-width: 400px;
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 12px;
+      padding: 28px 22px 18px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px 0 rgba(60,40,90,0.11), 0 1.5px 2.5px 0 rgba(50,50,80,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     input, select, button {
       width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      padding: 11px;
+      margin: 11px 0 0;
+      border-radius: 7px;
+      border: 1px solid #aaa;
       font-size: 16px;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #2F80ED;
+      outline: none;
     }
     button {
-      background-color: #0078d7;
-      color: white;
+      background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+      color: #fff;
       border: none;
+      margin-top: 15px;
+      font-size: 18px;
+      letter-spacing: 1px;
+      font-weight: bold;
       cursor: pointer;
+      box-shadow: 0 2px 8px rgba(80,50,135,0.09);
+      transition: background 0.2s;
     }
     button:hover {
-      background-color: #005fa3;
+      background: linear-gradient(90deg, #ff512f 25%, #2F80ED 100%);
     }
     .result {
       font-weight: bold;
-      font-size: 18px;
-      margin-top: 10px;
+      font-size: 22px;
+      margin-top: 16px;
+      color: #2f80ed;
+      text-align: center;
+      min-height: 24px;
+    }
+    .thanks {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 19px;
+      color: #1a2647;
+      background: #e0ffd5;
+      border-radius: 10px;
+      padding: 12px 15px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.7s;
+      pointer-events: none;
+    }
+    .thanks.visible {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <h2>🧮 Simple Java Calculator</h2>
+  <div class="main-center">
+    <div class="fancy-heading">🧮 Simple Java Calculator</div>
+    <div class="container">
+      <form id="calcForm">
+        <label for="a">Number A:</label>
+        <input name="a" id="a" type="number" step="any" placeholder="Enter first number" required />
 
-  <div class="container">
-    <form id="calcForm">
-      <label for="a">Number A:</label>
-      <input name="a" id="a" type="number" step="any" placeholder="Enter first number" required />
+        <label for="b">Number B:</label>
+        <input name="b" id="b" type="number" step="any" placeholder="Enter second number" required />
 
-      <label for="b">Number B:</label>
-      <input name="b" id="b" type="number" step="any" placeholder="Enter second number" required />
+        <label for="op">Operation:</label>
+        <select name="op" id="op">
+          <option value="add">Add (+)</option>
+          <option value="subtract">Subtract (−)</option>
+          <option value="multiply">Multiply (×)</option>
+          <option value="divide">Divide (÷)</option>
+        </select>
 
-      <label for="op">Operation:</label>
-      <select name="op" id="op">
-        <option value="add">Add (+)</option>
-        <option value="subtract">Subtract (−)</option>
-        <option value="multiply">Multiply (×)</option>
-        <option value="divide">Divide (÷)</option>
-      </select>
-
-      <button type="submit">Calculate</button>
-    </form>
-
-    <div id="result" class="result"></div>
+        <button type="submit">Calculate</button>
+      </form>
+      <div id="result" class="result"></div>
+      <div id="thanks" class="thanks">Thanks for using my calculator app! 🎉</div>
+    </div>
   </div>
-
   <script>
     document.getElementById('calcForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -85,8 +144,10 @@
 
       const data = await res.json();
       document.getElementById('result').textContent = 'Result: ' + data.result;
+
+      // Show thank you message after any calculation
+      document.getElementById('thanks').classList.add('visible');
     });
   </script>
-    <h2>Thanks for using My calculator app!</h2>
 </body>
 </html>
