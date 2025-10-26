@@ -1,15 +1,109 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'kubernetes/deployment.yaml'
+  pull_request:
+    branches: [ main ]
+
 jobs:
-  docker-ghcr:
+  test:
+    name: Unit Testing
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}:latest .
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build with Maven
+        run: mvn clean package
+      - name: Run tests
+        run: mvn test
+
+  lint:
+    name: Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run Checkstyle
+        run: mvn checkstyle:check
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build application
+        run: mvn clean package
+      - name: Upload Jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: calculator-app
+          path: target/*.jar
+
+  docker:
+    name: Docker Build & Security Scan
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
+      - name: Scan Docker image (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}:latest
+        run: docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+  update-k8s:
+    name: Update K8s Deployment
+    runs-on: ubuntu-latest
+    needs: [docker]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GHCR_TOKEN }}
+      - name: Setup Git config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+      - name: Update image tag in deployment.yaml
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          REGISTRY: ghcr.io
+          REPO: ${{ github.repository }}
+        run: |
+          NEW_IMAGE="${REGISTRY}/${REPO}:${IMAGE_TAG}"
+          sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" kubernetes/deployment.yaml
+          echo "Updated deployment.yaml with image: ${NEW_IMAGE}"
+          grep -A 1 "image:" kubernetes/deployment.yaml
+      - name: Commit and push changes
+        run: |
+          git add kubernetes/deployment.yaml
+          git commit -m "Update K8s deployment image tag: $IMAGE_TAG [skip ci]" || echo "No changes to commit"
+          git push
