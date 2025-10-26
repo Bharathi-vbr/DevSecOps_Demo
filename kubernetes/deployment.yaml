@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: calculator-app
-        image: ghcr.io/bharathi-vbr/devsecops_demo:e15d462c5b39035b622d564dcd3bdc7710331c88
+        image: ghcr.io/bharathi-vbr/devsecops_demo:344c9628595e35bc9daccac04509a8d42afcc9e3
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
