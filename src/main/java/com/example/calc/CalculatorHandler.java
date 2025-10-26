@@ -22,7 +22,7 @@ public final class CalculatorHandler implements HttpHandler {
     private static final int HTTP_OK = 200;
 
     /**
-     * Handles an HTTP exchange.
+     * Handles an HTTP exchange and routes to HTML or API handler.
      * @param exchange the HTTP exchange to process
      * @throws IOException if IO errors occur
      */
@@ -74,14 +74,10 @@ public final class CalculatorHandler implements HttpHandler {
         String op = params.getOrDefault("op", "add");
 
         double result = switch (op) {
-            case "subtract":
-                return a - b;
-            case "multiply":
-                return a * b;
-            case "divide":
-                return b != 0 ? a / b : Double.NaN;
-            default:
-                return a + b;
+            case "subtract" -> a - b;
+            case "multiply" -> a * b;
+            case "divide" -> b != 0 ? a / b : Double.NaN;
+            default -> a + b;
         };
 
         String response = "{\"result\": " + result + "}";
