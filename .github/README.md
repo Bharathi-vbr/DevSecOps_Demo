@@ -1,6 +1,6 @@
 # GitHub Actions CI/CD Pipeline
 
-This directory contains the GitHub Actions workflow for the Tic Tac Toe application's CI/CD pipeline.
+This directory contains the GitHub Actions workflow for the Calculator App CI/CD pipeline.
 
 ## Pipeline Stages
 
