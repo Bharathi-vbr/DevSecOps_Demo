@@ -1,5 +1,6 @@
 ## DevSecOps Pipeline Implementation for Java Calculator App
-<img width="1696" height="608" alt="image" src="https://github.com/user-attachments/assets/f68f743b-4c4e-491a-94c8-b2388725a05e" />
+<img width="1696" height="608" alt="image" src="https://github.com/user-attachments/assets/939e6f91-0d9a-4a61-8a53-6b6e80fbade3" />
+
 
 
 <img width="1423" height="653" alt="Screenshot 2025-10-26 at 4 06 27 PM" src="https://github.com/user-attachments/assets/caae9604-7126-4fd7-acaf-b8c3aa785b78" />
